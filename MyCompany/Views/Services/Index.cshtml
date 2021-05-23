@@ -1,0 +1,47 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<ServiceItem>
+
+@{ TextField textField = ViewBag.TextField; @*    ViewBag.Title = textField.MetaTitle;
+        ViewBag.Description = textField.MetaDescription;
+        ViewBag.Keywords = textField.MetaKeywords;*@ }
+<form class="form-inline mb-2 mb-3" method="post" asp-action="Index">
+    <button type="submit" class="btn btn-primary mb-2">Поиск</button>
+    <div class="form-group mx-sm-3 mb-2">
+        <input type="text" class="form-control" placeholder="Поиск Услуг" name="Service">
+    </div>
+</form>
+
+<form asp-action="Index" method="get" class="mb-3">
+    <input type="submit" name="Sort" value="сортировать по имени"><br>
+    <input type="submit" name="Sort" value="сортировать по дате добавления"><br>
+</form>
+
+
+<div>
+    @if (Model.Any())
+    {
+@foreach (ServiceItem entity in Model)
+{
+
+<div class="card mb-3">
+    @* <img src="images/@($"{entity.TitleImagePath}")" class="card-img-top" style="height:12rem;">*@
+    <div class="card-body">
+        <div class="row">
+            <img src="~/images/@($"{entity.TitleImagePath}")" class="" style="height:12rem; width: 15rem;">
+
+            <div class="right">
+                <a asp-area="" asp-controller="Services" asp-action="Index" asp-route-id="@entity.Id" style="font-size: 22px; font-weight: bolder; text-decoration: none">
+                    @($"{entity.Title}")
+                </a>
+                <br />
+                <br />
+                <p>@entity.Subtitle</p>
+            </div>
+        </div>
+    </div>
+</div>}}
+    <nav aria-label="Supplieers Navigation Example">
+        <ul class="pagination">
+            @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
+        </ul>
+    </nav>
+</div>
